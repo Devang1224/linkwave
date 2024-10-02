@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export default function connection(){
     try {
         mongoose.connect(process.env.MONGODB_URL!)
-        const connection=mongoose.connection
+        const connection=mongoose.connection;
         connection.on("connected",()=>{
             console.log("Conected with database")
         })
@@ -13,7 +13,7 @@ export default function connection(){
         })
         
     } catch (error) {
-        console.log("error while connection with databse");
+        console.log("error while connection with database");
         console.log(error)
     }
 }

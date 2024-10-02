@@ -3,21 +3,19 @@ const userSchema=new mongoose.Schema(
     {
         userName:{
             type:String,
-            requied:[true,"Please Provide a userName"],
+            required:[true,"Please Provide a userName"],
             unique:true
 
         },
         email:{
             type:"String",
-            requied:[true,"Please Provide a email"],
+            required:[true,"Please Provide an email"],
             unique:true 
             
         },
         password:{
             type:"String",
-            requied:[true,"Please Provide a email"],
-            unique:true 
-            
+            required:[true,"Please Provide a"],
         }
     }
 )
