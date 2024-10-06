@@ -7,7 +7,7 @@ import { LuLoader2 } from "react-icons/lu";
 interface Register {
   email:string,
   password:string
-  username:string,
+  userName:string,
 }
 
 export default function page() {
@@ -16,8 +16,9 @@ export default function page() {
 
 
 const onSubmit = async (data:Register)=>{
+  console.log("data",data)
   try{ 
-      const res = await axios.post('/api/signup',data);
+      const res = await axios.post('/api/users/signup',data);
       console.log(res);    
   } catch(err:any){
       console.log(err);
@@ -30,26 +31,26 @@ const onSubmit = async (data:Register)=>{
         <p className="text-center font-semibold text-2xl">Sign Up</p>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-2">
-            <label className="text-lg" htmlFor="field_username">
+            <label className="text-lg" htmlFor="field_userName">
               Username
             </label>
             <input
-              id="field_username"
+              id="field_userName"
               type="text"
               placeholder="Your username"
               className="bg-[#27272A] placeholder:text-[#A3A3A3] px-3 py-2 rounded-lg outline-none"
-              {...register("username", { required: 'Username is required', maxLength: 100 })}
+              {...register("userName", { required: 'Username is required', maxLength: 100 })}
             />
-                {errors.username?.type === "required" && (
+                {errors.userName?.type === "required" && (
                  <p role="alert" className="text-red-500 text-sm">First name is required</p>
                 )}
           </div>
           <div className="flex flex-col gap-2">
-            <label className="text-lg" htmlFor="field_username">
+            <label className="text-lg" htmlFor="field_userName">
               Email
             </label>
             <input
-              id="field_username"
+              id="field_userName"
               type="text"
               placeholder="test@gmail.com"
               className="bg-[#27272A] placeholder:text-[#A3A3A3] px-3 py-2 rounded-lg outline-none"
@@ -68,11 +69,11 @@ const onSubmit = async (data:Register)=>{
             }
           </div>
           <div className="flex flex-col gap-2">
-            <label className="text-lg" htmlFor="field_username">
+            <label className="text-lg" htmlFor="field_userName">
               Password
             </label>
             <input
-              id="field_username"
+              id="field_userName"
               type="password"
               placeholder="............"
               className="bg-[#27272A] placeholder:text-[#A3A3A3] px-3 py-2 rounded-lg outline-none"
