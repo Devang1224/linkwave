@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
         if(error){
             return NextResponse.json({
                 success:false,
-                status:400,
+                code:400,
                 message:error
             },{status: 400})
         }
@@ -49,7 +49,8 @@ export async function POST(request: NextRequest) {
         if (user) {
             return NextResponse.json(
                 {
-                    error: "User already exists",
+                    message: "User already exists",
+                    code:400
                 },
                 {
                     status: 400,
@@ -76,16 +77,17 @@ export async function POST(request: NextRequest) {
             email,
         };
         return NextResponse.json({
-            status: 200,
+            code: 200,
             message: 'User saved successfully',
             data: userData,
-        });
+        },{status:200});
 
     } catch (error: any) {
         console.error("Error:", error); // Log the error for debugging
         return NextResponse.json(
             {
-                error: error.message,
+                message: error.message,
+                code:500
             },
             {
                 status: 500,

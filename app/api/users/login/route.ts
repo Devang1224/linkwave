@@ -14,30 +14,30 @@ export async function POST(request: NextRequest) {
         // Validate input fields
         if (!email || !password) {
             return NextResponse.json({
-                status: 400,
+                code: 400,
                 success: false,
                 message: "All fields are required"
-            });
+            },{status:400});
         }
 
         // Find user by email
         const user = await User.findOne({ email });
         if (!user) {
             return NextResponse.json({
-                status: 404,
+                code: 404,
                 success: false,
                 message: "User does not exist"
-            });
+            },{status:404});
         }
 
         // Validate password
         const isPasswordValid = await bcryptjs.compare(password, user.password);
         if (!isPasswordValid) {
             return NextResponse.json({
-                status: 401,
+                code: 401,
                 success: false,
                 message: "Password is incorrect"
-            });
+            },{status:401});
         }
 
         //  JWT payload
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
         };
 
         //  token
-        const token = jwt.sign(userData, process.env.TOKEN_SECRET!, { expiresIn: '1d' });
+        const token = jwt.sign(userData, process.env.TOKEN_SECRET!, { expiresIn: '7d' });
 
         // Create response
         const response = NextResponse.json({
@@ -56,12 +56,16 @@ export async function POST(request: NextRequest) {
             success: true,
             message: "Logged in successfully",
             token:token,
-            data: userData
+            data: {
+                username: userData.userName,
+                email:user.email
+            }
         });
 
         
         response.cookies.set("token", token, {
             httpOnly: true, 
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days from now
         });
 
         return response;
@@ -69,9 +73,9 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error("Error while logging in user:", error);
         return NextResponse.json({
-            status: 500,
+            code: 500,
             success: false,
             message: "Error logging in user"
-        });
+        },{status:500});
     }
 }

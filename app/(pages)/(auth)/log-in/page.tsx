@@ -3,48 +3,36 @@
 import { useForm } from "react-hook-form"
 import axios from "axios";
 import { LuLoader2 } from "react-icons/lu";
+import { useState } from "react";
+import Link from "next/link";
 
-interface Register {
+interface Login {
   email:string,
   password:string
-  userName:string,
 }
 
-export default function page() {
+export default function Login() {
   
-  const {register,handleSubmit,formState:{errors,isSubmitting}} = useForm<Register>();
+  const {register,handleSubmit,reset,formState:{errors,isSubmitting}} = useForm<Login>();
+  const [error,setError] = useState('');
 
-
-const onSubmit = async (data:Register)=>{
+const onSubmit = async (data:Login)=>{
   console.log("data",data)
   try{ 
-      const res = await axios.post('/api/users/signup',data);
-      console.log(res);    
+      const res:any = await axios.post('/api/users/login',data);
+      reset()
+      setError("")
   } catch(err:any){
-      console.log(err);
+      console.log(err.response.data.message);
+      setError(err.response.data.message)
   } 
 }
 
   return (
     <div className="min-h-screen flex justify-center items-center">
       <div className="border border-[#27272A] p-5 rounded-lg w-[600px]">
-        <p className="text-center font-semibold text-2xl">Sign Up</p>
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-2">
-            <label className="text-lg" htmlFor="field_userName">
-              Username
-            </label>
-            <input
-              id="field_userName"
-              type="text"
-              placeholder="Your username"
-              className="bg-[#27272A] placeholder:text-[#A3A3A3] px-3 py-2 rounded-lg outline-none"
-              {...register("userName", { required: 'Username is required', maxLength: 100 })}
-            />
-                {errors.userName?.type === "required" && (
-                 <p role="alert" className="text-red-500 text-sm">First name is required</p>
-                )}
-          </div>
+        <p className="text-center font-semibold text-2xl">Log In</p>
+        <form className="flex flex-col gap-4 mt-10" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-2">
             <label className="text-lg" htmlFor="field_userName">
               Email
@@ -93,16 +81,26 @@ const onSubmit = async (data:Register)=>{
               )
             }
           </div>
-
+          <div>
+          {
+            error && (
+              <p className="text-red-500 text-sm text-center pt-5">{error}</p>
+            )
+          }  
+          </div>
           <button
             type="submit"
             className="font-semibold text-lg bg-[#18181B] p-2 rounded-lg mt-10 flex justify-center items-center h-[44px]"
           >
             {
-                isSubmitting ? <LuLoader2 className=" animate-spin"/> : 'Sign Up'
+                isSubmitting ? <LuLoader2 className=" animate-spin"/> : 'Log In'
             }
           </button>
         </form>
+        <div className="mt-10">
+            <p className="text-white/60">Dont have an account?<Link href="/sign-up" className="text-blue-300">&nbsp; Sign Up</Link></p>
+        </div>
+  
       </div>
     </div>
   );
