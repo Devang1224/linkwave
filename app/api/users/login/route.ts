@@ -7,6 +7,11 @@ import jwt from "jsonwebtoken";
 connection();
 
 export async function POST(request: NextRequest) {
+
+console.log("env",
+    process.env.NEXT_PUBLIC_TOKEN_SECRET
+);
+
     try {
         const body = await request.json();
         const { email, password } = body;
@@ -48,7 +53,7 @@ export async function POST(request: NextRequest) {
         };
 
         //  token
-        const token = jwt.sign(userData, process.env.TOKEN_SECRET!, { expiresIn: '7d' });
+        const token = jwt.sign(userData, process.env.NEXT_PUBLIC_TOKEN_SECRET!, { expiresIn: '7d' });
 
         // Create response
         const response = NextResponse.json({

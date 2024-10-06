@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export default function connection(){
     try {
-        mongoose.connect(process.env.MONGODB_URL!)
+        mongoose.connect(process.env.NEXT_PUBLIC_MONGODB_URL!)
         const connection=mongoose.connection;
         connection.on("connected",()=>{
             console.log("Conected with database")

@@ -8,12 +8,9 @@ export async function GET(request:NextRequest) {
             status:200,
             success:true,
             message:"Logout Successfully",
-        })
+        },{status:200})
         // clearing cookies
-        response.cookies.set("token","",{
-            httpOnly:true,
-            expires:new Date(0)
-        })
+        response.cookies.delete("token");
         return response
     } catch (error) {
         console.log("Error while Logout user",error);
@@ -21,7 +18,7 @@ export async function GET(request:NextRequest) {
             success:false,
             status:500,
             message:"Error while logout"
-        })
+        },{status:500})
         
     }
 }
