@@ -3,7 +3,7 @@ import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import { z } from "zod";
-
+import jwt from "jsonwebtoken"
 
 connection();
 
@@ -73,14 +73,21 @@ export async function POST(request: NextRequest) {
 
         // Respond with user data
         const userData = {
-            userName,
-            email,
+            id: savedUser._id,
+            userName: savedUser.userName,
+            email: savedUser.email
         };
-        return NextResponse.json({
+        const token=jwt.sign(userData,process.env.TOKEN_SECRET!,{expiresIn:"1d"})
+         const response=NextResponse.json({
             code: 200,
             message: 'User saved successfully',
             data: userData,
         },{status:200});
+        response.cookies.set("token", token, {
+            httpOnly: true, 
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days from now
+        });
+        return response
 
     } catch (error: any) {
         console.error("Error:", error); // Log the error for debugging
