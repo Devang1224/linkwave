@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Roboto_Mono } from 'next/font/google'
+import { SocketProvider } from "./providers/SocketProvider";
 
 const robotoMono = localFont({
   src: "./fonts/RobotoMono-VariableFont_wght.ttf",
@@ -36,7 +37,9 @@ export default function RootLayout({
       <body
         className={`${roboto_mono.variable} ${geistMono.variable} antialiased`}
       >
+        <SocketProvider>
           {children}
+        </SocketProvider>
       </body>
     </html>
   );

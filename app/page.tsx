@@ -1,8 +1,23 @@
+'use client'
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useSocket } from "./providers/SocketProvider";
 
 
 export default function Home() {
+
+const {socket} = useSocket()
+
+useEffect(()=>{
+console.log(socket);
+socket!.on('hello',()=>{
+  console.log('hello event');
+})
+},[])
+
+
   return (
      <div className="home_background">
               <nav className="flex items-center justify-between p-4 px-10">
@@ -15,10 +30,9 @@ export default function Home() {
               </nav>
 
               <div className="p-10">
-                <p 
+                {/* <p 
                 className="text-4xl font-medium text-center mt-10 tracking-widest [mask-image:linear-gradient(to_right,transparent,black,transparent)]"
-
-                >LISTEN WHAT THE WORLD IS LISTENING</p>
+                >LISTEN WHAT THE WORLD IS LISTENING</p> */}
               </div>
      </div>
   );
